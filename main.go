@@ -9,31 +9,23 @@ import (
 	"fyne.io/fyne/v2/widget"
 )
 
-type Config struct {
-	Domain          string `json:"domain"`          // 域名
-	AccessKeyId     string `json:"AccessKeyId"`     // 阿里云AccessKeyId
-	AccessKeySecret string `json:"AccessKeySecret"` // 阿里云AccessKeySecret
-}
-
 func main() {
+	// 配置加载-初始化
+	configTest := &Config{}
+	// 保存默认配置
+	saveConfig(configTest)
+	// 创建app
 	duc := app.New()
 	ducWindow := duc.NewWindow("Ali-DDNS Client")
-
-	// 配置加载（这里简化处理）
-	config := &Config{
-		AccessKeyId:     "AccessKeyId",
-		AccessKeySecret: "AccessKeySecret",
-	}
 
 	// 更新状态标签
 	statusLabel := widget.NewLabel("Ready")
 
 	// 更新按钮点击事件
 	updateButton := widget.NewButton("Update IP", func() {
-		currentIP, _ := getPublicIP()
-		err := updateDDNS(config, currentIP)
-		if err != nil {
-			statusLabel.SetText(fmt.Sprintf("Error: %v", err))
+		_err := refresh()
+		if _err != nil {
+			statusLabel.SetText(fmt.Sprintf("Error: %v", _err))
 		} else {
 			// setLastIP(currentIP, "last_ip.txt")
 			statusLabel.SetText("IP updated successfully.")
