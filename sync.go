@@ -25,7 +25,8 @@ const (
 
 // getPublicIP 获取当前的公网IP地址。
 func getPublicIP() (string, error) {
-	resp, err := http.Get("http://ifconfig.me/all.json")
+	// resp, err := http.Get("http://ifconfig.me/all.json")
+	resp, err := http.Get("https://4.ipw.cn/")
 	if err != nil {
 		return "", err
 	}
@@ -34,9 +35,10 @@ func getPublicIP() (string, error) {
 	if err != nil {
 		return "", err
 	}
-	var ipResp IPResponse
-	err = json.Unmarshal(body, &ipResp)
-	return ipResp.IP, err
+	// var ipResp IPResponse
+	// err = json.Unmarshal(body, &ipResp)
+	// return ipResp.IP, err
+	return string(body), nil
 }
 
 // 创建客户端
